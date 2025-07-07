@@ -15,6 +15,9 @@ WORKDIR /app
         
 # Copy dependency files
 COPY pyproject.toml uv.lock ./
+
+# Copy alembic.ini
+COPY alembic.ini ./
     
 # Install dependencies (excluding dev dependencies)
 RUN uv venv && \
@@ -39,6 +42,7 @@ WORKDIR /app
 # Copy installed virtualenv and application code
 COPY --from=builder /app/.venv /app/.venv
 COPY --from=builder /app/app ./app
+COPY --from=builder /app/alembic.ini /app/alembic.ini
         
 # Set environment variables
 ENV PATH="/app/.venv/bin:$PATH"
