@@ -8,4 +8,30 @@ services:
     environment:
       - APP_HOST=${APP_HOST}
       - APP_PORT=${APP_PORT}
-    
+      - APP_PORT_LOCAL=${APP_PORT_LOCAL}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_PORT_LOCAL=${POSTGRES_PORT_LOCAL}
+      - DB_MIGRATION_URL=${DB_MIGRATION_URL}
+      - DATABASE_URL=${DATABASE_URL}
+  postgres:
+    image: postgres
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT_LOCAL}:${POSTGRES_PORT}"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $POSTGRES_USER"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db-data:
