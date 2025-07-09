@@ -10,7 +10,7 @@ def buildapp(c):
 
 @task(pre=[updb, buildapp])
 def upapp(c):
-    c.run("docker compose up -d app")
+    c.run("docker compose up app")
 
 @task
 def makerevision(c, message):
