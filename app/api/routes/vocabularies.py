@@ -12,6 +12,12 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/vocabularies", tags=["vocabularies"])
 
+@router.get("/{vocabulary_no}", response_model=VocabularyRes, status_code=status.HTTP_200_OK)
+async def get_vocabulary_by_no(vocabulary_no: int, db: AsyncSession = Depends(get_async_session)) -> Any:
+    fetched = await crud.find_by_no(vocabulary_no, db)
+
+    return VocabularyRes.model_validate(fetched)
+
 @router.post("", response_model=VocabularyRes, status_code=status.HTTP_201_CREATED)
 async def create_vocabulary(req: VocabularyReq, db: AsyncSession = Depends(get_async_session)) -> Any:
     try:
