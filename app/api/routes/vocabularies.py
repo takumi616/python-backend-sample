@@ -47,6 +47,14 @@ async def create_vocabulary(req: VocabularyReq, db: AsyncSession = Depends(get_a
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="The vocabulary could not be registered."
         )
+    
+
+@router.put("/{vocabulary_no}", response_model=VocabularyRes, status_code=status.HTTP_200_OK)
+async def update_vocabulary(req: VocabularyReq, vocabulary_no: int, db: AsyncSession = Depends(get_async_session)) -> VocabularyRes:
+    updated = await crud.update(req, vocabulary_no, db)
+
+    return VocabularyRes.model_validate(updated)
+
 
 
 

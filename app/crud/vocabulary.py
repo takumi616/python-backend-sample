@@ -31,3 +31,17 @@ async def create(req: VocabularyReq, db: AsyncSession) -> Vocabulary:
     await db.refresh(vocabulary)
     
     return vocabulary
+
+
+async def update(req: VocabularyReq, vocabulary_no: int, db: AsyncSession) -> Vocabulary:
+    result = await db.execute(select(Vocabulary).where(Vocabulary.vocabulary_no == vocabulary_no))
+    vocabulary = result.scalar_one_or_none()
+
+    vocabulary.title = req.title
+    vocabulary.meaning = req.meaning
+    vocabulary.sentence = req.sentence
+
+    await db.commit()
+    await db.refresh(vocabulary)
+
+    return vocabulary
