@@ -12,5 +12,4 @@ async def lifespan(app: FastAPI):
 setup_logger()
 
 app = FastAPI()
-
 app.include_router(api_router)

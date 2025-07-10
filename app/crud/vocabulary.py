@@ -11,11 +11,13 @@ async def find_all(db: AsyncSession) -> list[Vocabulary]:
 
     return vocabularies
 
+
 async def find_by_no(vocabulary_no: int, db: AsyncSession) -> Vocabulary:
     result = await db.execute(select(Vocabulary).filter(Vocabulary.vocabulary_no == vocabulary_no))
     vocabulary = result.scalars().first()
     
     return vocabulary
+
 
 async def create(req: VocabularyReq, db: AsyncSession) -> Vocabulary:
     vocabulary = Vocabulary(
